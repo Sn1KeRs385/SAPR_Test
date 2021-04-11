@@ -1,0 +1,35 @@
+  version: '3'
+
+  services:
+
+    mysqldb:
+      container_name: saprt_test_mysql
+      image: mysql:8
+      restart: always
+      ports:
+        - 3306:3306
+      environment:
+        - MYSQL_ROOT_PASSWORD=123456
+        - MYSQL_DATABASE=admin
+        - MYSQL_USER=admin
+        - MYSQL_PASSWORD=123456
+      volumes:
+        - ./docker-data/mysql-data:/var/lib/mysql
+
+    adminer:
+      container_name: sapr_tests_adminer
+      image: adminer:latest
+      restart: always
+      ports:
+        - 8080:8080
+      depends_on:
+        - mysqldb
+
+    redisdb:
+      container_name: sapr_tests_redis
+      image: redis
+      restart: always
+      ports:
+        - 6379:6379
+      volumes:
+        - ./docker-data/redis-data:/data
